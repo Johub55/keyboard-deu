@@ -4,6 +4,10 @@
 
 #include "Keyboard.h"
 
+//vanaf kant zonder draadjes
+//onder pin 2
+//midden pin 3
+//boven pin 4
 //declaring button pins
 const int button1Pin = 2;
 const int button2Pin = 3;
@@ -12,6 +16,7 @@ const int button3Pin = 4;
 int previousButton1State = HIGH; 
 int previousButton2State = HIGH; 
 int previousButton3State = HIGH;
+bool Button2IsNotPressed = true;
 
 void setup() {
   //declare the buttons as input_pullup
@@ -31,7 +36,7 @@ void loop() {
   int button3State = digitalRead(button3Pin);
   
  //replaces button press with UP arrow
-  if (button1State == LOW && previousButton1State == HIGH) {
+  if (button1State == LOW && previousButton1State == HIGH && Button2IsNotPressed == true) {
       // and it's currently pressed:
     
     Serial.println("laag1");
@@ -40,7 +45,7 @@ void loop() {
     
   }
 
-  if (button1State == HIGH && previousButton1State == LOW) {
+  if (button1State == HIGH && previousButton1State == LOW && Button2IsNotPressed == true) {
       // and it's currently released:
     Serial.println("hoog1");
     Keyboard.release(121);
@@ -52,7 +57,8 @@ void loop() {
       // and it's currently pressed:
     
     Serial.println("laag2");
-    Keyboard.press(98);
+    //Keyboard.press(98);
+    Button2IsNotPressed = false;
     delay(50);
     
   }
@@ -60,26 +66,27 @@ void loop() {
   if (button2State == HIGH && previousButton2State == LOW) {
       // and it's currently released:
     Serial.println("hoog2");
-    Keyboard.release(98);
+    //Keyboard.release(98);
+    Button2IsNotPressed = true;
     delay(50);
     
   }
 
-  if (button3State == LOW && previousButton3State == HIGH) {
+  if (button3State == LOW && previousButton3State == HIGH && Button2IsNotPressed == true) {
       // and it's currently pressed:
     
     Serial.println("laag3");
     Keyboard.press(117);
     delay(50);
-    
+
   }
 
-  if (button3State == HIGH && previousButton3State == LOW) {
+  if (button3State == HIGH && previousButton3State == LOW && Button2IsNotPressed == true) {
       // and it's currently released:
     Serial.println("hoog3");
     Keyboard.release(117);
     delay(50);
-    
+
   }
  
   previousButton1State = button1State;
